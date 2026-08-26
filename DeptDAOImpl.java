@@ -1,0 +1,61 @@
+import java.sql.*;
+
+public class DeptDAOImpl implements DeptDAOIntf {
+    @Override
+    public void createDept() {
+
+    }
+
+    @Override
+    public void selectDept() {
+        try {
+            //1. load the driver
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            System.out.println("driver registered");
+
+            String url = "jdbc:mysql://localhost:3306/mysql";
+            String user = "root";
+            String password = "root@123";
+
+
+            Connection conn = DriverManager.getConnection(url,user,password);
+            System.out.println("connection established "+conn);
+
+            Statement st = conn.createStatement();
+            System.out.println("statement established "+st);
+
+            ResultSet rs = st.executeQuery("select * from dept");
+            System.out.println("got the result set "+rs);
+
+            while(rs.next()){
+                System.out.println("DEPTNO : "+rs.getInt(1));
+                System.out.println("DNAME  : "+rs.getString(2));
+                System.out.println("LOC    : "+rs.getString(3));
+                System.out.println("-------------------");
+            }
+
+            rs.close();
+            st.close();
+            conn.close();
+            System.out.println("db resources closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void selectAllDept() {
+
+    }
+
+    @Override
+    public void updateDept() {
+
+    }
+
+    @Override
+    public void deleteDept() {
+
+    }
+}
