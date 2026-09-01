@@ -1,5 +1,5 @@
-class Department
-{
+//1. Pojo
+class Department {
     int departmentNumber;
     String departmentName;
     String location;
@@ -10,7 +10,9 @@ class Department
         this.departmentName = departmentName;
         this.location = location;
     }
+    public Department() {
 
+    }
 
     public int getDepartmentNumber() {
         return departmentNumber;
