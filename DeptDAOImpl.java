@@ -1,11 +1,46 @@
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //3. Pojo Interface Crud Operation Implementation [ coding ]
 public class DeptDAOImpl implements DeptDAOIntf {
     @Override
     public void createDept(Department deptObj) { //implemented
+        try {
+            //1. load the driver
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            System.out.println("driver registered");
 
+            String url = "jdbc:mysql://localhost:3306/mysql";
+            String user = "root";
+            String password = "root@123";
+
+
+            Connection conn = DriverManager.getConnection(url,user,password);
+            System.out.println("connection established "+conn);
+
+            PreparedStatement pst = conn.prepareStatement("INSERT INTO DEPT VALUES (?,?,?)");
+            System.out.println("prepared statement established "+pst);
+
+
+
+
+
+            pst.setInt(1,deptObj.getDepartmentNumber());
+            pst.setString(2,deptObj.getDepartmentName());
+            pst.setString(3,deptObj.getLocation());
+
+            int rows = pst.executeUpdate();
+            System.out.println(rows+ " rows inserted ");
+
+
+            pst.close();
+            conn.close();
+            System.out.println("db resources closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -55,7 +90,53 @@ public class DeptDAOImpl implements DeptDAOIntf {
 
     @Override
     public List<Department> selectAllDept() { //implemented
-        return null;
+        List<Department> deptList = new ArrayList<Department>();;
+
+        Department deptObj = null;
+
+        try {
+            //1. load the driver
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            System.out.println("driver registered");
+
+            String url = "jdbc:mysql://localhost:3306/mysql";
+            String user = "root";
+            String password = "root@123";
+
+
+
+            Connection conn = DriverManager.getConnection(url,user,password);
+            System.out.println("connection established "+conn);
+
+            Statement st = conn.createStatement();
+            System.out.println("statement established "+st);
+
+            ResultSet rs = st.executeQuery("select * from dept");
+            System.out.println("got the result set "+rs);
+
+            while(rs.next()){
+                //create an empty object if row is found
+                deptObj = new Department();//for each row a new object is created
+
+                //fillup value in this object from rs
+                deptObj.setDepartmentNumber(rs.getInt(1));
+                deptObj.setDepartmentName(rs.getString(2));
+                deptObj.setLocation(rs.getString(3));
+
+                //push this object into the list
+                deptList.add(deptObj); //add that object in the list
+            }
+
+
+            rs.close();
+            st.close();
+            conn.close();
+            System.out.println("db resources closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return deptList;
+
     }
 
     @Override
