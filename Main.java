@@ -20,11 +20,13 @@ public class Main {
 
         }*/
 
-        Department deptObj = new Department();
-        deptObj.setDepartmentNumber(99);
-        deptObj.setDepartmentName("DevOps");
-        deptObj.setLocation("America");
+      /*  Department deptObj = new Department();
+        deptObj.setDepartmentNumber(100);
+        deptObj.setDepartmentName("TRG");
+        deptObj.setLocation("KOP");
 
-        intf.createDept(deptObj);
+        intf.updateDept(deptObj);*/
+
+        intf.deleteDept(100);
     }
 }

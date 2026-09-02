@@ -141,11 +141,71 @@ public class DeptDAOImpl implements DeptDAOIntf {
 
     @Override
     public void updateDept(Department deptObj) { //implemented
+        try {
+            //1. load the driver
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            System.out.println("driver registered");
 
+            String url = "jdbc:mysql://localhost:3306/mysql";
+            String user = "root";
+            String password = "root@123";
+
+
+            Connection conn = DriverManager.getConnection(url,user,password);
+            System.out.println("connection established "+conn);
+
+            PreparedStatement pst = conn.prepareStatement("UPDATE DEPT SET DNAME=?, LOC=? WHERE DEPTNO=?");
+            System.out.println("prepared statement established "+pst);
+
+
+
+            pst.setString(1, deptObj.getDepartmentName());
+            pst.setString(2,deptObj.getLocation());
+            pst.setInt(3,deptObj.getDepartmentNumber());
+
+
+            int rows = pst.executeUpdate();
+            System.out.println(rows+ " rows UPDATED ");
+
+
+            pst.close();
+            conn.close();
+            System.out.println("db resources closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void deleteDept(int deptno) { //implemented
+        try {
+            //1. load the driver
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            System.out.println("driver registered");
 
+            String url = "jdbc:mysql://localhost:3306/mysql";
+            String user = "root";
+            String password = "root@123";
+
+
+            Connection conn = DriverManager.getConnection(url,user,password);
+            System.out.println("connection established "+conn);
+
+            PreparedStatement pst = conn.prepareStatement("DELETE FROM DEPT WHERE DEPTNO=?");
+            System.out.println("prepared statement established "+pst);
+
+            pst.setInt(1,deptno);
+
+
+            int rows = pst.executeUpdate();
+            System.out.println(rows+ " rows DELETED ");
+
+
+            pst.close();
+            conn.close();
+            System.out.println("db resources closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
