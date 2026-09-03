@@ -5,10 +5,12 @@ import java.util.Scanner;
 
 //3. Pojo Interface Crud Operation Implementation [ coding ]
 public class DeptDAOImpl implements DeptDAOIntf {
-    @Override
-    public void createDept(Department deptObj) { //implemented
+
+    Connection conn; //global connection available for all functions
+
+    public DeptDAOImpl() {
+        //1. load the driver
         try {
-            //1. load the driver
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             System.out.println("driver registered");
 
@@ -16,16 +18,21 @@ public class DeptDAOImpl implements DeptDAOIntf {
             String user = "root";
             String password = "root@123";
 
+            //global conn is referred below
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("connection established " + conn);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
-            Connection conn = DriverManager.getConnection(url,user,password);
-            System.out.println("connection established "+conn);
+    @Override
+    public void createDept(Department deptObj) { //implemented
+        try {
 
             PreparedStatement pst = conn.prepareStatement("INSERT INTO DEPT VALUES (?,?,?)");
             System.out.println("prepared statement established "+pst);
-
-
-
-
 
             pst.setInt(1,deptObj.getDepartmentNumber());
             pst.setString(2,deptObj.getDepartmentName());
@@ -49,18 +56,6 @@ public class DeptDAOImpl implements DeptDAOIntf {
         Department deptObj = null;
 
         try {
-            //1. load the driver
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            System.out.println("driver registered");
-
-            String url = "jdbc:mysql://localhost:3306/mysql";
-            String user = "root";
-            String password = "root@123";
-
-
-
-            Connection conn = DriverManager.getConnection(url,user,password);
-            System.out.println("connection established "+conn);
 
             Statement st = conn.createStatement();
             System.out.println("statement established "+st);
@@ -95,18 +90,6 @@ public class DeptDAOImpl implements DeptDAOIntf {
         Department deptObj = null;
 
         try {
-            //1. load the driver
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            System.out.println("driver registered");
-
-            String url = "jdbc:mysql://localhost:3306/mysql";
-            String user = "root";
-            String password = "root@123";
-
-
-
-            Connection conn = DriverManager.getConnection(url,user,password);
-            System.out.println("connection established "+conn);
 
             Statement st = conn.createStatement();
             System.out.println("statement established "+st);
@@ -142,17 +125,6 @@ public class DeptDAOImpl implements DeptDAOIntf {
     @Override
     public void updateDept(Department deptObj) { //implemented
         try {
-            //1. load the driver
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            System.out.println("driver registered");
-
-            String url = "jdbc:mysql://localhost:3306/mysql";
-            String user = "root";
-            String password = "root@123";
-
-
-            Connection conn = DriverManager.getConnection(url,user,password);
-            System.out.println("connection established "+conn);
 
             PreparedStatement pst = conn.prepareStatement("UPDATE DEPT SET DNAME=?, LOC=? WHERE DEPTNO=?");
             System.out.println("prepared statement established "+pst);
@@ -179,17 +151,6 @@ public class DeptDAOImpl implements DeptDAOIntf {
     @Override
     public void deleteDept(int deptno) { //implemented
         try {
-            //1. load the driver
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            System.out.println("driver registered");
-
-            String url = "jdbc:mysql://localhost:3306/mysql";
-            String user = "root";
-            String password = "root@123";
-
-
-            Connection conn = DriverManager.getConnection(url,user,password);
-            System.out.println("connection established "+conn);
 
             PreparedStatement pst = conn.prepareStatement("DELETE FROM DEPT WHERE DEPTNO=?");
             System.out.println("prepared statement established "+pst);
